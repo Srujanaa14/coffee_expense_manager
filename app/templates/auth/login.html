@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Login — Coffee Expense Manager{% endblock %}
+
+{% block guest_content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    <div class="card shadow">
+      <div class="card-header text-white text-center py-3" style="background:#1a2e1a;">
+        <h4 class="mb-0">☕ Welcome Back</h4>
+        <small>Sign in to your account</small>
+      </div>
+      <div class="card-body p-4">
+        <form method="POST" action="{{ url_for('auth.login') }}">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Email Address</label>
+            <input type="email" name="email" class="form-control"
+                   placeholder="you@example.com" required/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Password</label>
+            <input type="password" name="password" class="form-control"
+                   placeholder="••••••••" required/>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" name="remember"
+                   class="form-check-input" id="remember"/>
+            <label class="form-check-label" for="remember">Remember me</label>
+          </div>
+          <button type="submit" class="btn w-100 text-white fw-bold"
+                  style="background:#2d5a2d;">
+            <i class="bi bi-box-arrow-in-right"></i> Login
+          </button>
+        </form>
+      </div>
+      <div class="card-footer text-center py-3">
+        Don't have an account?
+        <a href="{{ url_for('auth.register') }}" class="fw-semibold"
+           style="color:#2d5a2d;">Register here</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

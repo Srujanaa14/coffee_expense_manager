@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}Edit Income — Coffee Expense Manager{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+
+    <div class="d-flex align-items-center gap-2 mb-4">
+      <a href="{{ url_for('income.index') }}"
+         class="btn btn-sm btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i>
+      </a>
+      <h4 class="fw-bold mb-0">Edit Income Record</h4>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show mb-3" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card">
+      <div class="card-body p-4">
+        <form method="POST" action="{{ url_for('income.edit', income_id=income.id) }}">
+          <div class="row g-3">
+
+            <div class="col-md-8">
+              <label class="form-label fw-semibold">
+                Title <span class="text-danger">*</span>
+              </label>
+              <input type="text" name="title" class="form-control"
+                     placeholder="e.g. Coffee bean sale — March batch"
+                     value="{{ income.title }}" required/>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">
+                Amount (₹) <span class="text-danger">*</span>
+              </label>
+              <input type="number" name="amount" class="form-control"
+                     placeholder="0.00" step="0.01" min="0"
+                     value="{{ income.amount }}" required/>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Source</label>
+              <select name="source" class="form-select">
+                <option value="">-- Select Source --</option>
+                {% for src in sources %}
+                <option value="{{ src }}"
+                  {% if income.source == src %}selected{% endif %}>
+                  {{ src }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                Farm <span class="text-danger">*</span>
+              </label>
+              <select name="farm_id" class="form-select" required>
+                <option value="">-- Select Farm --</option>
+                {% for farm in farms %}
+                <option value="{{ farm.id }}"
+                  {% if income.farm_id == farm.id %}selected{% endif %}>
+                  {{ farm.name }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                Date <span class="text-danger">*</span>
+              </label>
+              <input type="date" name="date" class="form-control"
+                     value="{{ income.date.strftime('%Y-%m-%d') }}" required/>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold">Notes (optional)</label>
+              <textarea name="notes" class="form-control" rows="3"
+                        placeholder="Buyer name, quantity sold, price per kg...">{{ income.notes if income.notes else '' }}</textarea>
+            </div>
+
+            <div class="col-12 d-flex gap-2 mt-2">
+              <button type="submit" class="btn text-white fw-bold flex-fill"
+                      style="background:#1a6b1a;">
+                <i class="bi bi-check-circle"></i> Save Changes
+              </button>
+              <a href="{{ url_for('income.index') }}"
+                 class="btn btn-outline-secondary flex-fill">Cancel</a>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Danger Zone -->
+    <div class="card mt-3 border-danger">
+      <div class="card-body py-3 d-flex justify-content-between align-items-center">
+        <div>
+          <p class="fw-semibold text-danger mb-0">
+            <i class="bi bi-exclamation-triangle"></i> Delete this record
+          </p>
+          <p class="text-muted mb-0" style="font-size:12px;">
+            This action is permanent and cannot be undone.
+          </p>
+        </div>
+        <form method="POST"
+              action="{{ url_for('income.delete', income_id=income.id) }}"
+              onsubmit="return confirm('Are you sure you want to delete this income record? This cannot be undone.')">
+          <button type="submit" class="btn btn-danger btn-sm px-3">
+            <i class="bi bi-trash"></i> Delete
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

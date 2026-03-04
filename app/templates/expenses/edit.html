@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Edit Expense — Coffee Expense Manager{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+
+    <div class="d-flex align-items-center gap-2 mb-4">
+      <a href="{{ url_for('expenses.index') }}"
+         class="btn btn-sm btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i>
+      </a>
+      <h4 class="fw-bold mb-0">Edit Expense</h4>
+    </div>
+
+    <div class="card">
+      <div class="card-body p-4">
+        <form method="POST"
+              action="{{ url_for('expenses.edit', expense_id=expense.id) }}">
+
+          <div class="row g-3">
+
+            <div class="col-md-8">
+              <label class="form-label fw-semibold">
+                Expense Title <span class="text-danger">*</span>
+              </label>
+              <input type="text" name="title" class="form-control"
+                     value="{{ expense.title }}" required/>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">
+                Amount (₹) <span class="text-danger">*</span>
+              </label>
+              <input type="number" name="amount" class="form-control"
+                     value="{{ expense.amount }}" step="0.01" min="0" required/>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                Category <span class="text-danger">*</span>
+              </label>
+              <select name="category" class="form-select" required>
+                {% for cat in categories %}
+                <option value="{{ cat }}"
+                  {{ 'selected' if expense.category == cat }}>
+                  {{ cat }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                Farm <span class="text-danger">*</span>
+              </label>
+              <select name="farm_id" class="form-select" required>
+                {% for farm in farms %}
+                <option value="{{ farm.id }}"
+                  {{ 'selected' if expense.farm_id == farm.id }}>
+                  {{ farm.name }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                Date <span class="text-danger">*</span>
+              </label>
+              <input type="date" name="date" class="form-control"
+                     value="{{ expense.date.strftime('%Y-%m-%d') }}" required/>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold">Notes (optional)</label>
+              <textarea name="notes" class="form-control"
+                        rows="3">{{ expense.notes or '' }}</textarea>
+            </div>
+
+            <div class="col-12 d-flex gap-2 mt-2">
+              <button type="submit" class="btn text-white fw-bold flex-fill"
+                      style="background:#2d5a2d;">
+                <i class="bi bi-check-circle"></i> Save Changes
+              </button>
+              <a href="{{ url_for('expenses.index') }}"
+                 class="btn btn-outline-secondary flex-fill">Cancel</a>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

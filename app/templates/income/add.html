@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Add Income — Coffee Expense Manager{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+
+    <div class="d-flex align-items-center gap-2 mb-4">
+      <a href="{{ url_for('income.index') }}"
+         class="btn btn-sm btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i>
+      </a>
+      <h4 class="fw-bold mb-0">Add Income Record</h4>
+    </div>
+
+    <div class="card">
+      <div class="card-body p-4">
+        <form method="POST" action="{{ url_for('income.add') }}">
+          <div class="row g-3">
+
+            <div class="col-md-8">
+              <label class="form-label fw-semibold">
+                Title <span class="text-danger">*</span>
+              </label>
+              <input type="text" name="title" class="form-control"
+                     placeholder="e.g. Coffee bean sale — March batch" required/>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">
+                Amount (₹) <span class="text-danger">*</span>
+              </label>
+              <input type="number" name="amount" class="form-control"
+                     placeholder="0.00" step="0.01" min="0" required/>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Source</label>
+              <select name="source" class="form-select">
+                <option value="">-- Select Source --</option>
+                {% for src in sources %}
+                <option value="{{ src }}">{{ src }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                Farm <span class="text-danger">*</span>
+              </label>
+              <select name="farm_id" class="form-select" required>
+                <option value="">-- Select Farm --</option>
+                {% for farm in farms %}
+                <option value="{{ farm.id }}">{{ farm.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                Date <span class="text-danger">*</span>
+              </label>
+              <input type="date" name="date" class="form-control"
+                     value="{{ today }}" required/>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold">Notes (optional)</label>
+              <textarea name="notes" class="form-control" rows="3"
+                        placeholder="Buyer name, quantity sold, price per kg..."></textarea>
+            </div>
+
+            <div class="col-12 d-flex gap-2 mt-2">
+              <button type="submit" class="btn text-white fw-bold flex-fill"
+                      style="background:#1a6b1a;">
+                <i class="bi bi-plus-circle"></i> Add Income
+              </button>
+              <a href="{{ url_for('income.index') }}"
+                 class="btn btn-outline-secondary flex-fill">Cancel</a>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
